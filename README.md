@@ -1,3 +1,3 @@
-# El Club de la Hamburguesa Whatsapp Bot
+# Club de la Hamburguesa Whatsapp Bot
 
 
