@@ -1,17 +1,16 @@
-const venom = require('venom-bot');
+import {create, Whatsapp} from 'venom-bot';
 
-venom
-  .create({
-    session: 'bot'
-  })
-  .then((client) => start(client))
+create({
+  session: 'bot'
+})
+  .then((client: Whatsapp) => start(client))
   .catch((erro) => {
     console.log(erro);
   });
 
-const start = (client) => {
+const start = (client: Whatsapp) => {
   client.onMessage((message) => {
-    if (message.body === 'Hi' && message.isGroupMsg === false) {
+    if (message.body === 'Hi' && !message.isGroupMsg) {
       client
         .sendText(message.from, 'Welcome Venom 🕷')
         .then((result) => {
