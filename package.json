@@ -14,6 +14,6 @@
     "typescript": "^5.4.5"
   },
   "dependencies": {
-    "venom-bot": "^5.1.0"
+    "venom-bot": "https://github.com/orkestral/venom.git#master"
   }
 }

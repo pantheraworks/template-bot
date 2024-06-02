@@ -12,7 +12,8 @@ create({
 const start = (client: Whatsapp) => {
   const controller = new Controller(client);
 
-  client.onMessage((message) => {
-    controller.sayHiBack(message);
-  });
+  client.onMessage(async (message) => {
+    await controller.sayHiBack(message).then(r => console.log('Said hi back'));
+    controller.sendMainOptions(message).then(r => console.log('Sent main options'));
+  }).then(r => console.log('Listener started!'));
 }
