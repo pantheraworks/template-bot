@@ -1,5 +1,5 @@
 import {create, Whatsapp} from 'venom-bot';
-import Controller from "./controller";
+import Controller from "./Controller";
 
 create({
   session: 'bot'
@@ -13,7 +13,6 @@ const start = (client: Whatsapp) => {
   const controller = new Controller(client);
 
   client.onMessage(async (message) => {
-    await controller.sayHiBack(message).then(r => console.log('Said hi back'));
-    controller.sendMainOptions(message).then(r => console.log('Sent main options'));
-  }).then(r => console.log('Listener started!'));
+    await controller.handleMessage(message);
+  }).then(_r => console.log('Listener started!'));
 }
