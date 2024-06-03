@@ -34,8 +34,24 @@ class Controller {
     return await this.sendText(user.id, text);
   }
 
+  public async sendMenu(user: User): Promise<void> {
+    try {
+      await this.sendText(user.id, 'Este es el menu:');
+      await this.sendImage(user.id, './src/assets/menu_1.jpg', 'menu_1', ' ');
+      await this.sendImage(user.id, './src/assets/menu_2.jpg', 'menu_2', ' ');
+      await this.sendImage(user.id, './src/assets/menu_3.jpg', 'menu_3', ' ');
+      await this.sendImage(user.id, './src/assets/menu_4.jpg', 'menu_4', ' ');
+    } catch (error) {
+      throw error;
+    }
+  }
+
   public async sendText(to: string, text: string) {
     await this.client.sendText(to, text);
+  }
+
+  private async sendImage(to: string, path: string, image_name: string, caption: string) {
+    return await this.client.sendImage(to, path, image_name, caption);
   }
 }
 
