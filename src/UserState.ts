@@ -25,7 +25,8 @@ class UserStateMainOptions extends UserState {
   public handleMessage = async (option: string, controller: Controller, user: User) => {
     switch (option) {
       case '1':
-        return await controller.sendMenu(user);
+        await controller.sendMenu(user);
+        return await controller.sendMainOptions(user);
       case '2':
         return await controller.sendText(user.id, 'No implementado');
       case '3':
