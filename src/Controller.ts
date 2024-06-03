@@ -34,8 +34,31 @@ class Controller {
     return await this.sendText(user.id, text);
   }
 
+  public async sendMenu(user: User): Promise<void> {
+    const menuImagesPaths: string[] = [
+      './src/assets/menu_1.jpg',
+      './src/assets/menu_2.jpg',
+      './src/assets/menu_3.jpg',
+      './src/assets/menu_4.jpg'
+    ];
+
+    try {
+      await this.sendText(user.id, 'Este es el menu:');
+      for (const path of menuImagesPaths) {
+        const index = menuImagesPaths.indexOf(path);
+        await this.sendImage(user.id, path, `menu_${index}`, ' ');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   public async sendText(to: string, text: string) {
-    await this.client.sendText(to, text);
+    return await this.client.sendText(to, text);
+  }
+
+  private async sendImage(to: string, path: string, image_name: string, caption: string) {
+    return await this.client.sendImage(to, path, image_name, caption);
   }
 }
 
