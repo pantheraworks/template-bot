@@ -44,14 +44,39 @@ class UserStateOrderOption extends UserState {
   }
 
   public handleMessage = async (option: string, controller: Controller, user: User) => {
-    const menu = controller.getMenu();
-    if(!menu.has(Number(option))){
+    if (!controller.getMenu().has(Number(option))) {
       await controller.sendText(user.id, 'Ingresaste algo incorrecto, volvé a intentar con uno de los items del menu');
       return await controller.sendMenuOptions(user);
     }
-    const itemName = (menu.get(Number(option))?.getName());
+    const itemName = (controller.getMenu().get(Number(option))?.getName());
+    user.setState(new UserStateOrderQuantity());
     return await controller.sendText(user.id, `¿Cuantas unidades de ${itemName} queres comprar?\nSeleccioná 0 para volver atras`);
   }
 }
 
-export {UserState, UserStateDefault, UserStateMainOptions, UserStateOrderOption};
+class UserStateOrderQuantity extends UserState {
+  constructor() {
+    super();
+  }
+
+  public handleMessage = async (option: string, controller: Controller, user: User) => {
+    controller.getMenu();
+    if (Number(option) == 0) {
+      await controller.sendMenuOptions(user);
+      return user.setState(new UserStateOrderOption());
+    }
+    if (!Number(option) || Number(option) < 0) {
+      return await controller.sendText(user.id, `Ingresaste una cantidad incorrecta, tiene que ser un numero entero y positivo`);
+    }
+    return await controller.sendText(user.id, `No implementado`);
+  }
+}
+  export {
+  UserState
+,
+  UserStateDefault
+,
+  UserStateMainOptions
+,
+  UserStateOrderOption
+};
