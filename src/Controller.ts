@@ -1,6 +1,7 @@
 import {Message, Whatsapp} from "venom-bot";
 import User from "./User";
 import MenuItem from "./MenuItem";
+import menuItem from "./MenuItem";
 
 class Controller {
 
@@ -38,18 +39,22 @@ class Controller {
   }
 
   private getMenuOptions() {
-    return [
-      new MenuItem(1, 'hamburguesa', 9800),
-      new MenuItem(2, 'hamburguesa con queso', 11000),
-      new MenuItem(3, 'hamburguesa de pollo', 8500),
-      new MenuItem(4, 'hamburguesa de bacon y cheddar', 13000),
-    ];
+    let options = new Map();
+    options.set(1, new MenuItem(1, 'hamburguesa', 9800));
+    options.set(2, new MenuItem(2, 'hamburguesa con queso', 11000));
+    options.set(3, new MenuItem(3, 'hamburguesa de pollo', 8500));
+    options.set(4, new MenuItem(4, 'hamburguesa de bacon y cheddar', 13000));
+    options.set(5, new MenuItem(5, 'hamburguesa jr', 5000));
+    return options;
   }
 
   public async sendMenuOptions(user: User) {
-    const optionText = this.menuOptions.map((option, _index) => `${option.getId()}. ${option.getName()} => $${option.getPrice()}`).join('\n');
-    const text = `Este es el menu, seleccioná lo que quieras comer:\n${optionText}`;
-    return await this.sendText(user.id, text);
+    let optionText = '';
+    (this.menuOptions).forEach((value: menuItem, key: number) => {
+      optionText = optionText.concat(`${key}. ${value.getName()} => $${value.getPrice()}\n`);
+    });
+    optionText.trimEnd();
+    return await this.sendText(user.id, optionText);
   }
 
   public async sendMenu(user: User): Promise<void> {
