@@ -62,8 +62,11 @@ class UserStateOrderSize extends UserState {
     super();
   }
 
-  public handleMessage = async (_option: string, controller: Controller, user: User) => {
-    return await controller.sendText(user.id, `No implementado`);
+  public handleMessage = async (option: string, controller: Controller, user: User) => {
+    if (Number(option) == 0) {
+      user.setState(new UserStateOrderOption());
+      return await controller.sendMenuOptions(user);
+    }
   }
 }
 
@@ -84,8 +87,11 @@ class UserStateOrderSize extends UserState {
 // }
 //
   export {
-  UserState,
-  UserStateDefault,
-  UserStateMainOptions,
+  UserState
+,
+  UserStateDefault
+,
+  UserStateMainOptions
+,
   UserStateOrderOption
 };
