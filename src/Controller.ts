@@ -52,7 +52,7 @@ class Controller {
     (this.menuOptions).forEach((value: MenuItem, _key) => {
       optionText = optionText.concat(`${value.id}. ${value.name}\n`);
     });
-    optionText =optionText.concat('Seleccioná 0 para volver atrás.');
+    optionText = optionText.concat('Seleccioná 0 para volver atrás.');
     return await this.sendText(user.id, optionText);
   }
 
