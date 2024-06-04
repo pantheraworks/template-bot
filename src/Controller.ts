@@ -1,13 +1,12 @@
 import {Message, Whatsapp} from "venom-bot";
 import User from "./User";
 import MenuItem from "./MenuItem";
-import menuItem from "./MenuItem";
 
 class Controller {
 
   private client: Whatsapp;
   private users: Map<string, User>;
-  private menuOptions: Map<number, MenuItem>;
+  public readonly menuOptions: Map<number, MenuItem>;
 
   public constructor(client: Whatsapp) {
     this.client = client;
@@ -50,10 +49,10 @@ class Controller {
 
   public async sendMenuOptions(user: User) {
     let optionText = 'Seleccioná lo que quieras comer:\n';
-    (this.menuOptions).forEach((value: menuItem, _key) => {
-      optionText = optionText.concat(`${value.getId()}. ${value.getName()}\n`);
+    (this.menuOptions).forEach((value: MenuItem, _key) => {
+      optionText = optionText.concat(`${value.id}. ${value.name}\n`);
     });
-    optionText =optionText.concat('Seleccioná 0 para volver atras.');
+    optionText =optionText.concat('Seleccioná 0 para volver atrás.');
     return await this.sendText(user.id, optionText);
   }
 
@@ -82,10 +81,6 @@ class Controller {
 
   private async sendImage(to: string, path: string, image_name: string, caption: string) {
     return await this.client.sendImage(to, path, image_name, caption);
-  }
-
-  public getMenu(){
-    return this.menuOptions;
   }
 }
 

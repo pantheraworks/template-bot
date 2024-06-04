@@ -48,13 +48,13 @@ class UserStateOrderOption extends UserState {
       user.setState(new UserStateMainOptions());
       return await controller.sendMainOptions(user);
     }
-    if (!controller.getMenu().has(Number(option))) {
-      await controller.sendText(user.id, 'Ingresaste algo incorrecto, volvé a intentar con uno de los items del menu');
+    if (!controller.menuOptions.has(Number(option))) {
+      await controller.sendText(user.id, 'Ingresaste algo incorrecto, volvé a intentar con uno de los items del menu.');
       return await controller.sendMenuOptions(user);
     }
-    const itemName = (controller.getMenu().get(Number(option))?.getName());
+    const itemName = (controller.menuOptions.get(Number(option))?.name);
     user.setState(new UserStateOrderQuantity());
-    return await controller.sendText(user.id, `¿Cuantas unidades de ${itemName} queres comprar?\nSeleccioná 0 para volver atras`);
+    return await controller.sendText(user.id, `¿Cuantas unidades de ${itemName} queres comprar?\nSeleccioná 0 para volver atras.`);
   }
 }
 
@@ -64,13 +64,12 @@ class UserStateOrderQuantity extends UserState {
   }
 
   public handleMessage = async (option: string, controller: Controller, user: User) => {
-    controller.getMenu();
     if (Number(option) == 0) {
-      await controller.sendMenuOptions(user);
-      return user.setState(new UserStateOrderOption());
+      user.setState(new UserStateOrderOption());
+      return await controller.sendMenuOptions(user);
     }
     if (!Number(option) || Number(option) < 0) {
-      return await controller.sendText(user.id, `Ingresaste una cantidad incorrecta, tiene que ser una cantidad adecuada`);
+      return await controller.sendText(user.id, `Ingresaste una cantidad incorrecta, tiene que ser una cantidad adecuada\n Seleccioná 0 para volver atrás`);
     }
     return await controller.sendText(user.id, `No implementado`);
   }
