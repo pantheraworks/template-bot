@@ -28,8 +28,8 @@ class UserStateMainOptions extends UserState {
         await controller.sendMenu(user);
         return await controller.sendMainOptions(user);
       case '2':
-        await controller.sendMenuOptions(user);
-        return user.setState(new UserStateOrderOption());
+        user.setState(new UserStateOrderOption());
+        return await controller.sendMenuOptions(user);
       case '3':
         return await controller.sendText(user.id, 'No implementado');
       default:
@@ -52,9 +52,8 @@ class UserStateOrderOption extends UserState {
       await controller.sendText(user.id, 'Ingresaste algo incorrecto, volvé a intentar con uno de los items del menu.');
       return await controller.sendMenuOptions(user);
     }
-    const itemName = (controller.menuOptions.get(Number(option))?.name);
     user.setState(new UserStateOrderSize());
-    return await controller.sendText(user.id, `¿De que tamaño queres tu ${itemName}?\nSeleccioná 0 para volver atrás.`);
+    return await controller.sendOrderSizeOptions(user, Number(option));
   }
 }
 
@@ -63,27 +62,27 @@ class UserStateOrderSize extends UserState {
     super();
   }
 
-  public handleMessage = async (option: string, controller: Controller, user: User) => {
+  public handleMessage = async (_option: string, controller: Controller, user: User) => {
     return await controller.sendText(user.id, `No implementado`);
   }
 }
 
-class UserStateOrderQuantity extends UserState {
-  constructor() {
-    super();
-  }
-
-  public handleMessage = async (option: string, controller: Controller, user: User) => {
-    if (Number(option) == 0) {
-      user.setState(new UserStateOrderOption());
-      return await controller.sendMenuOptions(user);
-    }
-    if (!Number(option) || Number(option) < 0) {
-      return await controller.sendText(user.id, `Ingresaste una cantidad incorrecta, tiene que ser una cantidad adecuada\n Seleccioná 0 para volver atrás`);
-    }
-    return await controller.sendText(user.id, `No implementado`);
-  }
-}
+//class UserStateOrderQuantity extends UserState {
+//  constructor() {
+//    super();
+//  }
+//
+// public handleMessage = async (option: string, controller: Controller, user: User) => {
+//   if (Number(option) == 0) {
+//     user.setState(new UserStateOrderOption());
+//     return await controller.sendMenuOptions(user);
+//   }
+//   if (!Number(option) || Number(option) < 0) {
+//     return await controller.sendText(user.id, `Ingresaste una cantidad incorrecta, tiene que ser una cantidad adecuada\n Seleccioná 0 para volver atrás`);
+//   }
+//   return await controller.sendText(user.id, `No implementado`);
+// }
+//
   export {
   UserState,
   UserStateDefault,
