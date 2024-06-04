@@ -7,7 +7,7 @@ class Controller {
 
   private client: Whatsapp;
   private users: Map<string, User>;
-  private menuOptions;
+  private menuOptions: Map<number, MenuItem>;
 
   public constructor(client: Whatsapp) {
     this.client = client;
@@ -49,11 +49,10 @@ class Controller {
   }
 
   public async sendMenuOptions(user: User) {
-    let optionText = '';
+    let optionText = 'Seleccioná lo que quieras comer:\n';
     (this.menuOptions).forEach((value: menuItem, _key) => {
       optionText = optionText.concat(`${value.getId()}. ${value.getName()} => $${value.getPrice()}\n`);
     });
-    optionText.trimEnd();
     return await this.sendText(user.id, optionText);
   }
 
@@ -82,6 +81,10 @@ class Controller {
 
   private async sendImage(to: string, path: string, image_name: string, caption: string) {
     return await this.client.sendImage(to, path, image_name, caption);
+  }
+
+  public getMenu(){
+    return this.menuOptions;
   }
 }
 

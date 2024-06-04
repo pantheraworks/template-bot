@@ -28,8 +28,8 @@ class UserStateMainOptions extends UserState {
         await controller.sendMenu(user);
         return await controller.sendMainOptions(user);
       case '2':
-        user.setState(new UserStateOrderOption());
-        return await controller.sendMenuOptions(user);
+        await controller.sendMenuOptions(user);
+        return user.setState(new UserStateOrderOption());
       case '3':
         return await controller.sendText(user.id, 'No implementado');
       default:
@@ -44,7 +44,13 @@ class UserStateOrderOption extends UserState {
   }
 
   public handleMessage = async (option: string, controller: Controller, user: User) => {
-    return await controller.sendText(user.id, `No implementado`);
+    const menu = controller.getMenu();
+    if(!menu.has(Number(option))){
+      await controller.sendText(user.id, 'Ingresaste algo incorrecto, volvé a intentar con uno de los items del menu');
+      return await controller.sendMenuOptions(user);
+    }
+    const itemName = (menu.get(Number(option))?.getName());
+    return await controller.sendText(user.id, `¿Cuantas unidades de ${itemName} queres comprar?\nSeleccioná 0 para volver atras`);
   }
 }
 
