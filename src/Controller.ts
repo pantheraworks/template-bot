@@ -1,14 +1,17 @@
 import {Message, Whatsapp} from "venom-bot";
 import User from "./User";
+import MenuItem from "./MenuItem";
 
 class Controller {
 
   private client: Whatsapp;
   private users: Map<string, User>;
+  public readonly menuOptions: Map<number, MenuItem>;
 
   public constructor(client: Whatsapp) {
     this.client = client;
     this.users = new Map();
+    this.menuOptions = this.getMenuOptions();
   }
 
   public async handleMessage(message: Message) {
@@ -32,6 +35,25 @@ class Controller {
     const optionText = options.map((option, index) => `${index + 1}. ${option}`).join('\n');
     const text = `Seleccioná una opción:\n${optionText}`;
     return await this.sendText(user.id, text);
+  }
+
+  private getMenuOptions() {
+    let options = new Map();
+    options.set(1, new MenuItem(1, 'hamburguesa', 9800));
+    options.set(2, new MenuItem(2, 'hamburguesa con queso', 11000));
+    options.set(3, new MenuItem(3, 'hamburguesa de pollo', 8500));
+    options.set(4, new MenuItem(4, 'hamburguesa de bacon y cheddar', 13000));
+    options.set(5, new MenuItem(5, 'hamburguesa jr', 5000));
+    return options;
+  }
+
+  public async sendMenuOptions(user: User) {
+    let optionText = 'Seleccioná lo que quieras comer:\n';
+    (this.menuOptions).forEach((value: MenuItem, _key) => {
+      optionText = optionText.concat(`${value.id}. ${value.name}\n`);
+    });
+    optionText = optionText.concat('Seleccioná 0 para volver atrás.');
+    return await this.sendText(user.id, optionText);
   }
 
   public async sendMenu(user: User): Promise<void> {
