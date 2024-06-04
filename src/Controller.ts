@@ -36,7 +36,7 @@ class Controller {
 
   public async sendMenuOptions(user: User) {
     const options = [
-      'burger',
+      'hamburger',
       'cheeseburger',
       'chicken burger'
     ]
