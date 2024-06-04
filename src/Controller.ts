@@ -34,6 +34,17 @@ class Controller {
     return await this.sendText(user.id, text);
   }
 
+  public async sendMenuOptions(user: User) {
+    const options = [
+      'burger',
+      'cheeseburger',
+      'chicken burger'
+    ]
+    const optionText = options.map((option, index) => `${index + 1}. ${option}`).join('\n');
+    const text = `Este es el menu, seleccioná lo que quieras comer:\n${optionText}`;
+    return await this.sendText(user.id, text);
+  }
+
   public async sendMenu(user: User): Promise<void> {
     const menuImagesPaths: string[] = [
       './src/assets/menu_1.jpg',

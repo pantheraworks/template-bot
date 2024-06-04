@@ -29,7 +29,7 @@ class UserStateMainOptions extends UserState {
         return await controller.sendMainOptions(user);
       case '2':
         user.setState(new UserStateOrder());
-        return await controller.sendText(user.id, 'Aca deberia mostrar las opciones de menu');
+        return await controller.sendMenuOptions(user);
       case '3':
         return await controller.sendText(user.id, 'No implementado');
       default:
