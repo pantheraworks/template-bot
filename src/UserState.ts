@@ -53,8 +53,18 @@ class UserStateOrderOption extends UserState {
       return await controller.sendMenuOptions(user);
     }
     const itemName = (controller.menuOptions.get(Number(option))?.name);
-    user.setState(new UserStateOrderQuantity());
-    return await controller.sendText(user.id, `¿Cuantas unidades de ${itemName} queres comprar?\nSeleccioná 0 para volver atrás.`);
+    user.setState(new UserStateOrderSize());
+    return await controller.sendText(user.id, `¿De que tamaño queres tu ${itemName}?\nSeleccioná 0 para volver atrás.`);
+  }
+}
+
+class UserStateOrderSize extends UserState {
+  constructor() {
+    super();
+  }
+
+  public handleMessage = async (option: string, controller: Controller, user: User) => {
+    return await controller.sendText(user.id, `No implementado`);
   }
 }
 
