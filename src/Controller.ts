@@ -6,10 +6,12 @@ class Controller {
 
   private client: Whatsapp;
   private users: Map<string, User>;
+  private menuOptions;
 
   public constructor(client: Whatsapp) {
     this.client = client;
     this.users = new Map();
+    this.menuOptions = this.getMenuOptions();
   }
 
   public async handleMessage(message: Message) {
@@ -35,13 +37,17 @@ class Controller {
     return await this.sendText(user.id, text);
   }
 
-  public async sendMenuOptions(user: User) {
-    const options = [
+  private getMenuOptions() {
+    return [
       new MenuItem(1, 'hamburguesa', 9800),
       new MenuItem(2, 'hamburguesa con queso', 11000),
       new MenuItem(3, 'hamburguesa de pollo', 8500),
-    ]
-    const optionText = options.map((option, _index) => `${option.id}. ${option.name} = ${option.price}`).join('\n');
+      new MenuItem(4, 'hamburguesa de bacon y cheddar', 13000),
+    ];
+  }
+
+  public async sendMenuOptions(user: User) {
+    const optionText = this.menuOptions.map((option, _index) => `${option.id}. ${option.name} => $${option.price}`).join('\n');
     const text = `Este es el menu, seleccioná lo que quieras comer:\n${optionText}`;
     return await this.sendText(user.id, text);
   }
