@@ -47,7 +47,7 @@ class Controller {
   }
 
   public async sendMenuOptions(user: User) {
-    const optionText = this.menuOptions.map((option, _index) => `${option.id}. ${option.name} => $${option.price}`).join('\n');
+    const optionText = this.menuOptions.map((option, _index) => `${option.getId()}. ${option.getName()} => $${option.getPrice()}`).join('\n');
     const text = `Este es el menu, seleccioná lo que quieras comer:\n${optionText}`;
     return await this.sendText(user.id, text);
   }
