@@ -75,11 +75,8 @@ class UserStateOrderQuantity extends UserState {
   }
 }
   export {
-  UserState
-,
-  UserStateDefault
-,
-  UserStateMainOptions
-,
+  UserState,
+  UserStateDefault,
+  UserStateMainOptions,
   UserStateOrderOption
 };
