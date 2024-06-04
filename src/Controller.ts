@@ -1,5 +1,6 @@
 import {Message, Whatsapp} from "venom-bot";
 import User from "./User";
+import MenuItem from "./MenuItem";
 
 class Controller {
 
@@ -36,11 +37,11 @@ class Controller {
 
   public async sendMenuOptions(user: User) {
     const options = [
-      'hamburger',
-      'cheeseburger',
-      'chicken burger'
+      new MenuItem(1, 'hamburguesa', 9800),
+      new MenuItem(2, 'hamburguesa con queso', 11000),
+      new MenuItem(3, 'hamburguesa de pollo', 8500),
     ]
-    const optionText = options.map((option, index) => `${index + 1}. ${option}`).join('\n');
+    const optionText = options.map((option, _index) => `${option.id}. ${option.name} = ${option.price}`).join('\n');
     const text = `Este es el menu, seleccioná lo que quieras comer:\n${optionText}`;
     return await this.sendText(user.id, text);
   }

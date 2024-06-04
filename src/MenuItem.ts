@@ -9,3 +9,5 @@ class MenuItem {
     this.price = price;
   }
 }
+
+export default MenuItem
