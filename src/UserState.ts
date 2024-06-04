@@ -28,7 +28,8 @@ class UserStateMainOptions extends UserState {
         await controller.sendMenu(user);
         return await controller.sendMainOptions(user);
       case '2':
-        return await controller.sendText(user.id, 'No implementado');
+        user.setState(new UserStateOrder());
+        return await controller.sendText(user.id, 'Aca deberia mostrar las opciones de menu');
       case '3':
         return await controller.sendText(user.id, 'No implementado');
       default:
@@ -37,4 +38,14 @@ class UserStateMainOptions extends UserState {
   }
 }
 
-export {UserState, UserStateDefault, UserStateMainOptions};
+class UserStateOrder extends UserState {
+  constructor() {
+    super();
+  }
+
+  public handleMessage = async (_option: string, controller: Controller, user: User) => {
+    return await controller.sendText(user.id, 'Aca el usuario deberia poder agregar un elemento del menu, por ejemplo cheeseburger');
+  }
+}
+
+export {UserState, UserStateDefault, UserStateMainOptions, UserStateOrder};
