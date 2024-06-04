@@ -54,7 +54,7 @@ class UserStateOrderOption extends UserState {
     }
     const itemName = (controller.menuOptions.get(Number(option))?.name);
     user.setState(new UserStateOrderQuantity());
-    return await controller.sendText(user.id, `¿Cuantas unidades de ${itemName} queres comprar?\nSeleccioná 0 para volver atras.`);
+    return await controller.sendText(user.id, `¿Cuantas unidades de ${itemName} queres comprar?\nSeleccioná 0 para volver atrás.`);
   }
 }
 
