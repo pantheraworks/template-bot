@@ -51,8 +51,9 @@ class Controller {
   public async sendMenuOptions(user: User) {
     let optionText = 'Seleccioná lo que quieras comer:\n';
     (this.menuOptions).forEach((value: menuItem, _key) => {
-      optionText = optionText.concat(`${value.getId()}. ${value.getName()} => $${value.getPrice()}\n`);
+      optionText = optionText.concat(`${value.getId()}. ${value.getName()}\n`);
     });
+    optionText =optionText.concat('Seleccioná 0 para volver atras.');
     return await this.sendText(user.id, optionText);
   }
 
