@@ -115,16 +115,7 @@ class Controller {
   }
 
   public async sendOrderMedallonQuantity(user: User) {
-    const options = [
-      'Agregar 1 medallon',
-      'Agregar 2 medallones',
-      'Agregar 3 medallones',
-      'Agregar 4 medallones',
-      'Agregar 5 medallones',
-      'Agregar 6 medallones',
-    ];
-    const optionText = options.map((option, index) => `${index + 1}. ${option}`).join('\n');
-    const text = `Seleccioná la opcion que prefieras:\n${optionText}\nSeleccioná 0 para volver atrás.`;
+    const text = '¿Cuántos medallones con queso querés?\nSe pueden agregar hasta 6.\nSeleccioná 0 para volver atrás';
     return await this.sendText(user.id, text);
   }
 }
