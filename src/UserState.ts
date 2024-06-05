@@ -84,7 +84,7 @@ class UserStateOrderSize extends UserState {
       await controller.sendText(user.id, `Ingresaste un tamaño incorrecto, tiene que ser uno de los tamaños dados.\n`);
       return await controller.sendOrderSizeOptions(user);
     } else {
-      user.orderItem.sizes.push(menuItem.sizes[Number(option)]);
+      user.orderItem.sizes.push(menuItem.sizes[Number(option) - 1]);
       user.orderList.push(user.orderItem);
       user.setState(new UserStateMainOptions());
       await controller.sendText(user.id, `Acabas de pedir: ${user.orderItem.id}.${user.orderItem.name} de tamaño ${user.orderItem.sizes[1]}\n`);
