@@ -86,11 +86,9 @@ class Controller {
   }
 
   public async sendOrderSizeOptions(user: User) {
-    if (typeof user.orderItem.id === "string") {
-      const optionText = this.menuOptions.get(user.orderItem.id)?.sizes.map((option, index) => `${index + 1}. ${option}`).join('\n');
-      const text = `Seleccioná una opción para elegir el tamaño de tu ${this.menuOptions.get(user.orderItem.id)?.name} :\n${optionText}\nSeleccioná 0 para volver atrás.`;
-      return await this.sendText(user.id, text);
-    }
+    const optionText = this.menuOptions.get(user.orderItem.id)?.sizes.map((option, index) => `${index + 1}. ${option}`).join('\n');
+    const text = `Seleccioná una opción para elegir el tamaño de tu ${this.menuOptions.get(user.orderItem.id)?.name} :\n${optionText}\nSeleccioná 0 para volver atrás.`;
+    return await this.sendText(user.id, text);
   }
 }
 

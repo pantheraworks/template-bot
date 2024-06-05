@@ -52,7 +52,14 @@ class UserStateOrderOption extends UserState {
       await controller.sendText(user.id, 'Ingresaste algo incorrecto, volvé a intentar con uno de los items del menu.');
       return await controller.sendMenuOptions(user);
     }
-    user.orderItem.id = controller.menuOptions.get(option)?.id;
+    const menuItem = controller.menuOptions.get(option);
+    if (menuItem) {
+      user.orderItem.id = option;
+      user.orderItem.name = menuItem.name;
+    } else {
+      await controller.sendText(user.id, 'Ingresaste algo incorrecto, volvé a intentar con uno de los items del menu.');
+      return await controller.sendMenuOptions(user);
+    }
     user.setState(new UserStateOrderSize());
     return await controller.sendOrderSizeOptions(user);
   }
@@ -72,32 +79,21 @@ class UserStateOrderSize extends UserState {
       await controller.sendText(user.id, `Ingresaste un tamaño incorrecto, tiene que ser uno de los tamaños dados.\n`);
       return await controller.sendOrderSizeOptions(user);
     }
-      return await controller.sendText(user.id, `No implementado`);
+    const menuItem = controller.menuOptions.get(user.orderItem.id);
+    if (!menuItem || menuItem.sizes.length < Number(option)) {
+      await controller.sendText(user.id, `Ingresaste un tamaño incorrecto, tiene que ser uno de los tamaños dados.\n`);
+      return await controller.sendOrderSizeOptions(user);
+    } else {
+      user.orderItem.sizes.push(menuItem.sizes[Number(option)]);
+      user.orderList.push(user.orderItem);
+      return await controller.sendText(user.id, `Acabas de pedir: ${user.orderItem.id}.${user.orderItem.name} de tamaño ${user.orderItem.sizes[1]}\n`);
+    }
   }
 }
 
-//class UserStateOrderQuantity extends UserState {
-//  constructor() {
-//    super();
-//  }
-//
-// public handleMessage = async (option: string, controller: Controller, user: User) => {
-//   if (Number(option) == 0) {
-//     user.setState(new UserStateOrderOption());
-//     return await controller.sendMenuOptions(user);
-//   }
-//   if (!Number(option) || Number(option) < 0) {
-//     return await controller.sendText(user.id, `Ingresaste una cantidad incorrecta, tiene que ser una cantidad adecuada\n Seleccioná 0 para volver atrás`);
-//   }
-//   return await controller.sendText(user.id, `No implementado`);
-// }
-//
 export {
-  UserState
-  ,
-  UserStateDefault
-  ,
-  UserStateMainOptions
-  ,
+  UserState,
+  UserStateDefault,
+  UserStateMainOptions,
   UserStateOrderOption
 };

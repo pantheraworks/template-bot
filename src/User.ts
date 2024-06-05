@@ -14,7 +14,7 @@ class User {
     this.name = name;
     this.state = new UserStateDefault();
     this.orderList = [];
-    this.orderItem = new MenuItem('', '', 0, []);
+    this.orderItem = new MenuItem('a', 'a', 0, ['a']);
   }
 
   public async handleMessage(option: string, controller: Controller) {
