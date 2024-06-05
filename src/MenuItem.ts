@@ -1,18 +1,14 @@
 class MenuItem {
-  public readonly id: number;
-  public readonly name: string;
+  public id: string;
+  public name: string;
   public readonly price: number;
-  private  quantity: number;
+  public sizes: string[];
 
-  public constructor(id: number, name: string, price: number) {
+  public constructor(id: string, name: string, price: number, sizes: string[]) {
     this.id = id;
     this.name = name;
     this.price = price;
-    this.quantity = 0;
-  }
-
-  setQuantity(quantity: number) {
-    this.quantity = quantity;
+    this.sizes = sizes;
   }
 }
 
