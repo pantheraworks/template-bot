@@ -38,7 +38,8 @@ class UserStateMainOptions extends UserState {
       case '3':
         return await controller.sendText(user.id, 'No implementado');
       default:
-        return await controller.sendText(user.id, 'Opción inválida');
+        await controller.sendText(user.id, 'Opción inválida');
+        return await controller.sendMainOptions(user);
     }
   }
 }
@@ -63,10 +64,10 @@ class UserStateOrderOption extends UserState {
         user.currentOrderItem = new Hamburger(option, menuItem.name, menuItem.price, []);
         user.setState(new UserStateOrderSize());
         return await controller.sendOrderSizeOptions(user);
-      } else {
-        await controller.sendText(user.id, 'Ingresaste algo incorrecto, volvé a intentar con uno de los items del menu.');
-        return await controller.sendMenuOptions(user);
       }
+    } else {
+      await controller.sendText(user.id, 'Ingresaste algo incorrecto, volvé a intentar con uno de los items del menu.');
+      return await controller.sendMenuOptions(user);
     }
   }
 }
@@ -86,16 +87,17 @@ class UserStateOrderSize extends UserState {
       return await controller.sendOrderSizeOptions(user);
     }
     const menuItem = controller.menuOptions.get(user.currentOrderItem.id);
-    if (!menuItem || menuItem.getSizes().length < Number(option)) {
-      await controller.sendText(user.id, `Ingresaste un tamaño incorrecto, tiene que ser uno de los tamaños dados.\n`);
-      return await controller.sendOrderSizeOptions(user);
-    } else {
-      if (isHamburger(user.currentOrderItem)) {
-        user.currentOrderItem.sizes[1] = menuItem.getSizes()[Number(option) - 1]; //posiblemente aca salte error y haya que crear un setSizes()
-        user.setState(new UserStateMedallon());
-        return await controller.sendOrderMedallon(user);
+    if (menuItem) {
+      if (isHamburger(menuItem) && isHamburger(user.currentOrderItem)) {
+        if (menuItem.sizes.length >= Number(option)) {
+          user.currentOrderItem.sizes[1] = menuItem.sizes[Number(option) - 1];
+          user.setState(new UserStateMedallon());
+          return await controller.sendOrderMedallon(user);
+        }
       }
     }
+    await controller.sendText(user.id, `Ingresaste un tamaño incorrecto, tiene que ser uno de los tamaños dados.\n`);
+    return await controller.sendOrderSizeOptions(user);
   }
 }
 
@@ -120,7 +122,8 @@ class UserStateMedallon extends UserState {
         }
         return;
       default:
-        return await controller.sendText(user.id, `Ingresaste una opcion incorrecta, tiene que ser una de las opciones dadas.\n`);
+        await controller.sendText(user.id, `Ingresaste una opcion incorrecta, tiene que ser una de las opciones dadas.`);
+        return await controller.sendOrderMedallon(user);
     }
   }
 }

@@ -91,14 +91,19 @@ class Controller {
 
   public async sendOrderSizeOptions(user: User) {
     if (isHamburger(user.currentOrderItem)) {
-      const optionText = this.menuOptions.get(user.currentOrderItem.id)?.getSizes().map((option, index) => `${index + 1}. ${option}`).join('\n');
-      const text = `Seleccioná el tamaño de tu ${this.menuOptions.get(user.currentOrderItem.id)?.name} :\n${optionText}\nSeleccioná 0 para volver atrás.`;
-      return await this.sendText(user.id, text);
+      const menuItem = this.menuOptions.get(user.currentOrderItem.id);
+      if (menuItem) {
+        if (isHamburger(menuItem)) {
+          const optionText = menuItem.sizes.map((option, index) => `${index + 1}. ${option}`).join('\n');
+          const text = `Seleccioná el tamaño de tu ${menuItem.name} :\n${optionText}\nSeleccioná 0 para volver atrás.`;
+          return await this.sendText(user.id, text);
+        }
+      }
     }
   }
 
   public async sendOrderMedallon(user: User) {
-    if(isHamburger(user.currentOrderItem)){
+    if (isHamburger(user.currentOrderItem)) {
       const options = [
         'Si',
         'No',

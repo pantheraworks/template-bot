@@ -8,17 +8,11 @@ abstract class MenuItem {
     this.name = name;
     this.price = price;
   }
-
-  abstract getSizes(): string[]
-
 }
 
 class MenuItemDefault extends MenuItem {
   public constructor() {
     super('', '', 0);
-  }
-  public getSizes(){
-    return [];
   }
 }
 
@@ -30,10 +24,6 @@ class Hamburger extends MenuItem {
     super(id, name, price);
     this.sizes = sizes;
     this.medallones = '0';
-  }
-
-  public getSizes(): string[] {
-    return this.sizes;
   }
 }
 
