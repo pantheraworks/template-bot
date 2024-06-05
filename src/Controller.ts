@@ -1,9 +1,9 @@
 import {Message, Whatsapp} from "venom-bot";
 import User from "./User";
-import {MenuItem, Hamburger} from "./MenuItem";
+import {MenuItem, Burger} from "./MenuItem";
 
-function isHamburger(item: MenuItem): item is Hamburger {
-  return item instanceof Hamburger;
+function isHamburger(item: MenuItem): item is Burger {
+  return item instanceof Burger;
 }
 
 class Controller {
@@ -45,11 +45,11 @@ class Controller {
     const SDTP = ['Simple', 'Doble', 'Triple', 'Cuadruple'];
     const SD = ['Simple', 'Doble'];
     let options = new Map();
-    options.set('1', new Hamburger('1', 'hamburguesa', 9800, SDTP));
-    options.set('2', new Hamburger('2', 'hamburguesa con queso', 11000, SDTP));
-    options.set('3', new Hamburger('3', 'hamburguesa de pollo', 8500, SD));
-    options.set('4', new Hamburger('4', 'hamburguesa de bacon y cheddar', 13000, SDTP));
-    options.set('5', new Hamburger('5', 'hamburguesa jr', 5000, SD));
+    options.set('1', new Burger('1', 'hamburguesa', 9800, SDTP));
+    options.set('2', new Burger('2', 'hamburguesa con queso', 11000, SDTP));
+    options.set('3', new Burger('3', 'hamburguesa de pollo', 8500, SD));
+    options.set('4', new Burger('4', 'hamburguesa de bacon y cheddar', 13000, SDTP));
+    options.set('5', new Burger('5', 'hamburguesa jr', 5000, SD));
     return options;
   }
 

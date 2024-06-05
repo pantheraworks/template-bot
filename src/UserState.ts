@@ -1,9 +1,9 @@
 import Controller from "./Controller";
 import User from "./User";
-import {Hamburger, MenuItem} from "./MenuItem";
+import {Burger, MenuItem} from "./MenuItem";
 
-function isHamburger(item: MenuItem): item is Hamburger {
-  return item instanceof Hamburger;
+function isHamburger(item: MenuItem): item is Burger {
+  return item instanceof Burger;
 }
 
 abstract class UserState {
@@ -61,7 +61,7 @@ class UserStateOrderOption extends UserState {
     const menuItem = controller.menuOptions.get(option);
     if (menuItem) {
       if (isHamburger(menuItem)) {
-        user.currentOrderItem = new Hamburger(option, menuItem.name, menuItem.price, []);
+        user.currentOrderItem = new Burger(option, menuItem.name, menuItem.price, []);
         user.setState(new UserStateOrderSize());
         return await controller.sendOrderSizeOptions(user);
       }

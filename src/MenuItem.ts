@@ -16,7 +16,7 @@ class MenuItemDefault extends MenuItem {
   }
 }
 
-class Hamburger extends MenuItem {
+class Burger extends MenuItem {
   public sizes: string[];
   public medallones: string;
 
@@ -27,4 +27,4 @@ class Hamburger extends MenuItem {
   }
 }
 
-export {MenuItem, MenuItemDefault, Hamburger};
+export {MenuItem, MenuItemDefault, Burger};
