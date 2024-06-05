@@ -1,6 +1,10 @@
 import {Message, Whatsapp} from "venom-bot";
 import User from "./User";
-import MenuItem from "./MenuItem";
+import {MenuItem, Hamburger} from "./MenuItem";
+
+function isHamburger(item: MenuItem): item is Hamburger {
+  return item instanceof Hamburger;
+}
 
 class Controller {
 
@@ -41,11 +45,11 @@ class Controller {
     const SDTP = ['Simple', 'Doble', 'Triple', 'Cuadruple'];
     const SD = ['Simple', 'Doble'];
     let options = new Map();
-    options.set('1', new MenuItem('1', 'hamburguesa', 9800, SDTP));
-    options.set('2', new MenuItem('2', 'hamburguesa con queso', 11000, SDTP));
-    options.set('3', new MenuItem('3', 'hamburguesa de pollo', 8500, SD));
-    options.set('4', new MenuItem('4', 'hamburguesa de bacon y cheddar', 13000, SDTP));
-    options.set('5', new MenuItem('5', 'hamburguesa jr', 5000, SD));
+    options.set('1', new Hamburger('1', 'hamburguesa', 9800, SDTP));
+    options.set('2', new Hamburger('2', 'hamburguesa con queso', 11000, SDTP));
+    options.set('3', new Hamburger('3', 'hamburguesa de pollo', 8500, SD));
+    options.set('4', new Hamburger('4', 'hamburguesa de bacon y cheddar', 13000, SDTP));
+    options.set('5', new Hamburger('5', 'hamburguesa jr', 5000, SD));
     return options;
   }
 
@@ -86,19 +90,23 @@ class Controller {
   }
 
   public async sendOrderSizeOptions(user: User) {
-    const optionText = this.menuOptions.get(user.currentOrderItem.id)?.sizes.map((option, index) => `${index + 1}. ${option}`).join('\n');
-    const text = `Seleccioná el tamaño de tu ${this.menuOptions.get(user.currentOrderItem.id)?.name} :\n${optionText}\nSeleccioná 0 para volver atrás.`;
-    return await this.sendText(user.id, text);
+    if (isHamburger(user.currentOrderItem)) {
+      const optionText = this.menuOptions.get(user.currentOrderItem.id)?.getSizes().map((option, index) => `${index + 1}. ${option}`).join('\n');
+      const text = `Seleccioná el tamaño de tu ${this.menuOptions.get(user.currentOrderItem.id)?.name} :\n${optionText}\nSeleccioná 0 para volver atrás.`;
+      return await this.sendText(user.id, text);
+    }
   }
 
   public async sendOrderMedallon(user: User) {
-    const options = [
-      'Si',
-      'No',
-    ];
-    const optionText = options.map((option, index) => `${index + 1}. ${option}`).join('\n');
-    const text = `Pediste: ${user.currentOrderItem.id}.${user.currentOrderItem.name} de tamaño ${user.currentOrderItem.sizes[1]}\nTe gustaria agregar medallones con queso a tu hamburguesa?\nSeleccioná una opcion:\n${optionText}\nSeleccioná 0 para volver atrás.`;
-    return await this.sendText(user.id, text);
+    if(isHamburger(user.currentOrderItem)){
+      const options = [
+        'Si',
+        'No',
+      ];
+      const optionText = options.map((option, index) => `${index + 1}. ${option}`).join('\n');
+      const text = `Pediste: ${user.currentOrderItem.id}.${user.currentOrderItem.name} de tamaño ${user.currentOrderItem.sizes[1]}\nTe gustaria agregar medallones con queso a tu hamburguesa?\nSeleccioná una opcion:\n${optionText}\nSeleccioná 0 para volver atrás.`;
+      return await this.sendText(user.id, text);
+    }
   }
 
   public async sendOrderMedallonQuantity(user: User) {

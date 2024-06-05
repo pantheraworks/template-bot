@@ -1,6 +1,6 @@
 import {UserState, UserStateDefault} from "./UserState";
 import Controller from "./Controller";
-import MenuItem from "./MenuItem";
+import {MenuItem, MenuItemDefault} from "./MenuItem";
 
 class User {
   public id: string;
@@ -14,7 +14,7 @@ class User {
     this.name = name;
     this.state = new UserStateDefault();
     this.orderList = [];
-    this.currentOrderItem = new MenuItem('a', 'a', 0, ['a']);
+    this.currentOrderItem = new MenuItemDefault();
   }
 
   public async handleMessage(option: string, controller: Controller) {
