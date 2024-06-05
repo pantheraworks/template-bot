@@ -86,8 +86,8 @@ class Controller {
   }
 
   public async sendOrderSizeOptions(user: User) {
-    const optionText = this.menuOptions.get(user.orderItem.id)?.sizes.map((option, index) => `${index + 1}. ${option}`).join('\n');
-    const text = `Seleccioná el tamaño de tu ${this.menuOptions.get(user.orderItem.id)?.name} :\n${optionText}\nSeleccioná 0 para volver atrás.`;
+    const optionText = this.menuOptions.get(user.currentOrderItem.id)?.sizes.map((option, index) => `${index + 1}. ${option}`).join('\n');
+    const text = `Seleccioná el tamaño de tu ${this.menuOptions.get(user.currentOrderItem.id)?.name} :\n${optionText}\nSeleccioná 0 para volver atrás.`;
     return await this.sendText(user.id, text);
   }
 
@@ -97,7 +97,21 @@ class Controller {
       'No',
     ];
     const optionText = options.map((option, index) => `${index + 1}. ${option}`).join('\n');
-    const text = `Pediste: ${user.orderItem.id}.${user.orderItem.name} de tamaño ${user.orderItem.sizes[1]}\nTe gustaria agregar medallones con queso a tu hamburguesa?\nSeleccioná una opcion:\n${optionText}\nSeleccioná 0 para volver atrás.`;
+    const text = `Pediste: ${user.currentOrderItem.id}.${user.currentOrderItem.name} de tamaño ${user.currentOrderItem.sizes[1]}\nTe gustaria agregar medallones con queso a tu hamburguesa?\nSeleccioná una opcion:\n${optionText}\nSeleccioná 0 para volver atrás.`;
+    return await this.sendText(user.id, text);
+  }
+
+  public async sendOrderMedallonQuantity(user: User) {
+    const options = [
+      'Agregar 1 medallon',
+      'Agregar 2 medallones',
+      'Agregar 3 medallones',
+      'Agregar 4 medallones',
+      'Agregar 5 medallones',
+      'Agregar 6 medallones',
+    ];
+    const optionText = options.map((option, index) => `${index + 1}. ${option}`).join('\n');
+    const text = `Seleccioná la opcion que prefieras:\n${optionText}\nSeleccioná 0 para volver atrás.`;
     return await this.sendText(user.id, text);
   }
 }

@@ -54,8 +54,8 @@ class UserStateOrderOption extends UserState {
     }
     const menuItem = controller.menuOptions.get(option);
     if (menuItem) {
-      user.orderItem.id = option;
-      user.orderItem.name = menuItem.name;
+      user.currentOrderItem.id = option;
+      user.currentOrderItem.name = menuItem.name;
     } else {
       await controller.sendText(user.id, 'Ingresaste algo incorrecto, volvé a intentar con uno de los items del menu.');
       return await controller.sendMenuOptions(user);
@@ -79,13 +79,12 @@ class UserStateOrderSize extends UserState {
       await controller.sendText(user.id, `Ingresaste un tamaño incorrecto, tiene que ser uno de los tamaños dados.\n`);
       return await controller.sendOrderSizeOptions(user);
     }
-    const menuItem = controller.menuOptions.get(user.orderItem.id);
+    const menuItem = controller.menuOptions.get(user.currentOrderItem.id);
     if (!menuItem || menuItem.sizes.length < Number(option)) {
       await controller.sendText(user.id, `Ingresaste un tamaño incorrecto, tiene que ser uno de los tamaños dados.\n`);
       return await controller.sendOrderSizeOptions(user);
     } else {
-      user.orderItem.sizes[1] = menuItem.sizes[Number(option) - 1];
-      user.orderList[1] = user.orderItem;
+      user.currentOrderItem.sizes[1] = menuItem.sizes[Number(option) - 1];
       user.setState(new UserStateMedallon());
       return await controller.sendOrderMedallon(user);
     }
@@ -103,10 +102,43 @@ class UserStateMedallon extends UserState {
         user.setState(new UserStateOrderSize());
         return await controller.sendOrderSizeOptions(user);
       case '1':
-
+        user.setState(new UserStateMedallonQuantity());
+        return await controller.sendOrderMedallonQuantity(user);
       case '2':
-
+        user.orderList.push(user.currentOrderItem);
+        user.setState(new UserStateOrderSize());
+        return await controller.sendText(user.id, `Tu ${user.currentOrderItem.sizes[1]} ${user.currentOrderItem.name} ya está en el carrito!.\n`);
       default:
+        return await controller.sendText(user.id, `Ingresaste una opcion incorrecta, tiene que ser una de las opciones dadas.\n`);
+
+    }
+  }
+}
+
+class UserStateMedallonQuantity extends UserState {
+  constructor() {
+    super();
+  }
+
+  public handleMessage = async (option: string, controller: Controller, user: User) => {
+    switch (option) {
+      case '0':
+        user.setState(new UserStateOrderSize());
+        return await controller.sendOrderMedallon(user);
+      case '1':
+      case '2':
+      case '3':
+      case '4':
+      case '5':
+      case '6':
+        user.currentOrderItem.medallones = option;
+        user.orderList.push(user.currentOrderItem)
+        user.setState(new UserStateMainOptions());
+        await controller.sendText(user.id, `Tu ${user.currentOrderItem.sizes[1]} ${user.currentOrderItem.name} con ${user.currentOrderItem.medallones} medallones de queso ya está en el carrito!\n`);
+        return await controller.sendMainOptions(user);
+      default:
+        await controller.sendText(user.id, `Ingresaste una opcion incorrecta, tiene que ser una de las opciones dadas.`);
+        return await controller.sendOrderMedallonQuantity(user);
     }
   }
 }
