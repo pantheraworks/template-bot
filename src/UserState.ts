@@ -87,7 +87,7 @@ class UserStateOrderSize extends UserState {
       user.orderItem.sizes.push(menuItem.sizes[Number(option) - 1]);
       user.orderList.push(user.orderItem);
       user.setState(new UserStateMainOptions());
-      await controller.sendText(user.id, `Acabas de pedir: ${user.orderItem.id}.${user.orderItem.name} de tamaño ${user.orderItem.sizes[1]}\n`);
+      await controller.sendText(user.id, `Pediste: ${user.orderItem.id}.${user.orderItem.name} de tamaño ${user.orderItem.sizes[1]}\n`);
       return await controller.sendMainOptions(user);
     }
   }
