@@ -44,16 +44,17 @@ class UserStateOrderOption extends UserState {
   }
 
   public handleMessage = async (option: string, controller: Controller, user: User) => {
-    if (Number(option) == 0) {
+    if (option == '0') {
       user.setState(new UserStateMainOptions());
       return await controller.sendMainOptions(user);
     }
-    if (!controller.menuOptions.has(Number(option))) {
+    if (!controller.menuOptions.has(option)) {
       await controller.sendText(user.id, 'Ingresaste algo incorrecto, volvé a intentar con uno de los items del menu.');
       return await controller.sendMenuOptions(user);
     }
+    user.orderItem.id = controller.menuOptions.get(option)?.id;
     user.setState(new UserStateOrderSize());
-    return await controller.sendOrderSizeOptions(user, Number(option));
+    return await controller.sendOrderSizeOptions(user);
   }
 }
 
@@ -63,10 +64,15 @@ class UserStateOrderSize extends UserState {
   }
 
   public handleMessage = async (option: string, controller: Controller, user: User) => {
-    if (Number(option) == 0) {
+    if (option == '0') {
       user.setState(new UserStateOrderOption());
       return await controller.sendMenuOptions(user);
     }
+    if (!Number(option)) {
+      await controller.sendText(user.id, `Ingresaste un tamaño incorrecto, tiene que ser uno de los tamaños dados.\n`);
+      return await controller.sendOrderSizeOptions(user);
+    }
+      return await controller.sendText(user.id, `No implementado`);
   }
 }
 
@@ -86,12 +92,12 @@ class UserStateOrderSize extends UserState {
 //   return await controller.sendText(user.id, `No implementado`);
 // }
 //
-  export {
+export {
   UserState
-,
+  ,
   UserStateDefault
-,
+  ,
   UserStateMainOptions
-,
+  ,
   UserStateOrderOption
 };

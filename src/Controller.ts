@@ -6,7 +6,7 @@ class Controller {
 
   private client: Whatsapp;
   private users: Map<string, User>;
-  public readonly menuOptions: Map<number, MenuItem>;
+  public readonly menuOptions: Map<string, MenuItem>;
 
   public constructor(client: Whatsapp) {
     this.client = client;
@@ -41,11 +41,11 @@ class Controller {
     const SDTP = ['Simple', 'Doble', 'Triple', 'Cuadruple'];
     const SD = ['Simple', 'Doble'];
     let options = new Map();
-    options.set(1, new MenuItem(1, 'hamburguesa', 9800, SDTP));
-    options.set(2, new MenuItem(2, 'hamburguesa con queso', 11000, SDTP));
-    options.set(3, new MenuItem(3, 'hamburguesa de pollo', 8500, SD));
-    options.set(4, new MenuItem(4, 'hamburguesa de bacon y cheddar', 13000, SDTP));
-    options.set(5, new MenuItem(5, 'hamburguesa jr', 5000, SD));
+    options.set('1', new MenuItem('1', 'hamburguesa', 9800, SDTP));
+    options.set('2', new MenuItem('2', 'hamburguesa con queso', 11000, SDTP));
+    options.set('3', new MenuItem('3', 'hamburguesa de pollo', 8500, SD));
+    options.set('4', new MenuItem('4', 'hamburguesa de bacon y cheddar', 13000, SDTP));
+    options.set('5', new MenuItem('5', 'hamburguesa jr', 5000, SD));
     return options;
   }
 
@@ -85,10 +85,12 @@ class Controller {
     return await this.client.sendImage(to, path, image_name, caption);
   }
 
-  public async sendOrderSizeOptions(user: User, number: number) {
-    const optionText = this.menuOptions.get(number)?.sizes.map((option, index) => `${index + 1}. ${option}`).join('\n');
-    const text = `Seleccioná una opción para elegir el tamaño de tu ${this.menuOptions.get(number)?.name} :\n${optionText}\nSeleccioná 0 para volver atrás.`;
-    return await this.sendText(user.id, text);
+  public async sendOrderSizeOptions(user: User) {
+    if (typeof user.orderItem.id === "string") {
+      const optionText = this.menuOptions.get(user.orderItem.id)?.sizes.map((option, index) => `${index + 1}. ${option}`).join('\n');
+      const text = `Seleccioná una opción para elegir el tamaño de tu ${this.menuOptions.get(user.orderItem.id)?.name} :\n${optionText}\nSeleccioná 0 para volver atrás.`;
+      return await this.sendText(user.id, text);
+    }
   }
 }
 
