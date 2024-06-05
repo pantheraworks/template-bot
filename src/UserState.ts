@@ -86,10 +86,19 @@ class UserStateOrderSize extends UserState {
     } else {
       user.orderItem.sizes.push(menuItem.sizes[Number(option) - 1]);
       user.orderList.push(user.orderItem);
-      user.setState(new UserStateMainOptions());
-      await controller.sendText(user.id, `Pediste: ${user.orderItem.id}.${user.orderItem.name} de tamaño ${user.orderItem.sizes[1]}\n`);
-      return await controller.sendMainOptions(user);
+      user.setState(new UserStateMedallon());
+      return await controller.sendOrderMedallon(user);
     }
+  }
+}
+
+class UserStateMedallon extends UserState {
+  constructor() {
+    super();
+  }
+
+  public handleMessage = async (option: string, controller: Controller, user: User) => {
+    return await controller.sendText(user.id, `no implementado, pero se recibió ${option}`);
   }
 }
 
