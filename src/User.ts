@@ -7,14 +7,14 @@ class User {
   public name: string;
   private state: UserState;
   public orderList: MenuItem[];
-  public orderItem: MenuItem;
+  public currentOrderItem: MenuItem;
 
   public constructor(id: string, name: string) {
     this.id = id;
     this.name = name;
     this.state = new UserStateDefault();
     this.orderList = [];
-    this.orderItem = new MenuItem('a', 'a', 0, ['a']);
+    this.currentOrderItem = new MenuItem('a', 'a', 0, ['a']);
   }
 
   public async handleMessage(option: string, controller: Controller) {
