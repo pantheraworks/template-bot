@@ -84,8 +84,8 @@ class UserStateOrderSize extends UserState {
       await controller.sendText(user.id, `Ingresaste un tamaño incorrecto, tiene que ser uno de los tamaños dados.\n`);
       return await controller.sendOrderSizeOptions(user);
     } else {
-      user.orderItem.sizes.push(menuItem.sizes[Number(option) - 1]);
-      user.orderList.push(user.orderItem);
+      user.orderItem.sizes[1] = menuItem.sizes[Number(option) - 1];
+      user.orderList[1] = user.orderItem;
       user.setState(new UserStateMedallon());
       return await controller.sendOrderMedallon(user);
     }
@@ -98,7 +98,16 @@ class UserStateMedallon extends UserState {
   }
 
   public handleMessage = async (option: string, controller: Controller, user: User) => {
-    return await controller.sendText(user.id, `no implementado, pero se recibió ${option}`);
+    switch (option) {
+      case '0':
+        user.setState(new UserStateOrderSize());
+        return await controller.sendOrderSizeOptions(user);
+      case '1':
+
+      case '2':
+
+      default:
+    }
   }
 }
 
