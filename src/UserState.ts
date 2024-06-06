@@ -99,7 +99,7 @@ class UserStateMedallon extends UserState {
         user.orderList.push(user.currentOrderItem);
         user.setState(new UserStateMainOptions());
         await controller.sendText(user.id, `Tu ${user.currentOrderItem.getDetail()} ya está en el carrito!`);
-        return await controller.sendMenuOptions(user);
+        return await controller.sendMainOptions(user);
       default:
         await controller.sendText(user.id, `Ingresaste una opcion incorrecta`);
         return await controller.sendOrderMedallon(user);
