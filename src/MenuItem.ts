@@ -22,6 +22,10 @@ abstract class MenuItem {
   getDetail(): string {
     return `${this.name}`;
   }
+
+  getSizes(): string[] {
+    return [];
+  }
 }
 
 class MenuItemDefault extends MenuItem {
@@ -56,6 +60,10 @@ class Burger extends MenuItem {
 
   getDetail(): string {
     return `${this.name} de tamaño ${this.size}`;
+  }
+
+  getSizes(): string[] {
+    return this.sizes;
   }
 
   async updateUserStateAfterSelect(user: User, controller: Controller): Promise<Object | undefined> {

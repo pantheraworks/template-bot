@@ -2,10 +2,6 @@ import {Message, Whatsapp} from "venom-bot";
 import User from "./User";
 import {MenuItem, Burger} from "./MenuItem";
 
-function isHamburger(item: MenuItem): item is Burger {
-  return item instanceof Burger;
-}
-
 class Controller {
 
   private client: Whatsapp;
@@ -90,15 +86,11 @@ class Controller {
   }
 
   public async sendOrderSizeOptions(user: User) {
-    if (isHamburger(user.currentOrderItem)) {
-      const menuItem = this.menuOptions.get(user.currentOrderItem.id);
-      if (menuItem) {
-        if (isHamburger(menuItem)) {
-          const optionText = menuItem.sizes.map((option, index) => `${index + 1}. ${option}`).join('\n');
-          const text = `Seleccioná el tamaño de tu ${menuItem.name} :\n${optionText}\nSeleccioná 0 para volver atrás.`;
-          return await this.sendText(user.id, text);
-        }
-      }
+    const menuItem = this.menuOptions.get(user.currentOrderItem.id);
+    if (menuItem) {
+      const optionText = menuItem.getSizes().map((size, index) => `${index + 1}. ${size}`).join('\n');
+      const text = `Seleccioná el tamaño de tu ${menuItem.name} :\n${optionText}\nSeleccioná 0 para volver atrás.`;
+      return await this.sendText(user.id, text);
     }
   }
 
