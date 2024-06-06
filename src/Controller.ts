@@ -54,7 +54,7 @@ class Controller {
     (this.menuOptions).forEach((value: MenuItem, _key) => {
       optionText = optionText.concat(`${value.id}. ${value.name}\n`);
     });
-    optionText = optionText.concat('Seleccioná 0 para volver atrás.');
+    optionText = optionText.concat('Seleccioná 0 para volver atrás');
     return await this.sendText(user.id, optionText);
   }
 
@@ -89,7 +89,7 @@ class Controller {
     const menuItem = this.menuOptions.get(user.currentOrderItem.id);
     if (menuItem) {
       const optionText = menuItem.getSizes().map((size, index) => `${index + 1}. ${size}`).join('\n');
-      const text = `Seleccioná el tamaño de tu ${menuItem.name} :\n${optionText}\nSeleccioná 0 para volver atrás.`;
+      const text = `Seleccioná el tamaño de tu ${menuItem.name} :\n${optionText}\nSeleccioná 0 para volver atrás`;
       return await this.sendText(user.id, text);
     }
   }
@@ -100,7 +100,7 @@ class Controller {
       'No',
     ];
     const optionText = options.map((option, index) => `${index + 1}. ${option}`).join('\n');
-    const text = `Pediste: ${user.currentOrderItem.getDetail()}\nTe gustaria agregar medallones con queso a tu hamburguesa?\nSeleccioná una opcion:\n${optionText}\nSeleccioná 0 para volver atrás.`;
+    const text = `Pediste: ${user.currentOrderItem.getDetail()}\n¿Te gustaría agregar medallones con queso a tu hamburguesa?\nSeleccioná una opcion:\n${optionText}\nSeleccioná 0 para volver atrás`;
     return await this.sendText(user.id, text);
   }
 

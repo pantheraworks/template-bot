@@ -73,24 +73,24 @@ class Burger extends MenuItem {
 
   async setSize(size: number, user: User, controller: Controller): Promise<Object | undefined> {
     if (size > this.sizes.length) {
-      await controller.sendText(user.id, `Ingresaste un tamaño incorrecto, tiene que ser uno de los tamaños dados.\n`);
+      await controller.sendText(user.id, `Ingresaste un tamaño incorrecto, tiene que ser uno de los tamaños dados`);
       return await controller.sendOrderSizeOptions(user);
     }
     this.size = this.sizes[size - 1];
     user.currentOrderItem = this;
     user.setState(new UserStateMedallon());
-    return await controller.sendOrderMedallon(user)
+    return await controller.sendOrderMedallon(user);
   }
 
   async setMedallones(medallones: number, user: User, controller: Controller): Promise<Object | undefined> {
     if (medallones > 6 || medallones < 0) {
-      await controller.sendText(user.id, `Ingresaste una cantidad incorrecta.`);
-      return await controller.sendOrderMedallon(user);
+      await controller.sendText(user.id, `Ingresaste una cantidad incorrecta`);
+      return await controller.sendOrderMedallonQuantity(user);
     }
     this.medallones = medallones;
     user.orderList.push(this);
     user.setState(new UserStateMainOptions());
-    await controller.sendText(user.id, `Tu ${this.getDetail()} con ${this.medallones} medallones de queso ya está en el carrito!\n`);
+    await controller.sendText(user.id, `Tu ${this.getDetail()} con ${this.medallones} medallones de queso ya está en el carrito!`);
     return await controller.sendMainOptions(user);
   }
 }
