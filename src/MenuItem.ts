@@ -72,8 +72,8 @@ class Burger extends MenuItem {
   }
 
   async setSize(size: number, user: User, controller: Controller): Promise<Object | undefined> {
-    if (size > this.sizes.length) {
-      await controller.sendText(user.id, `Ingresaste un tamaño incorrecto, tiene que ser uno de los tamaños dados`);
+    if (size > this.sizes.length || size < 0) {
+      await controller.sendText(user.id, `Ingresaste un tamaño incorrecto`);
       return await controller.sendOrderSizeOptions(user);
     }
     this.size = this.sizes[size - 1];
