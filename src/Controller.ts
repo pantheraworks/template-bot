@@ -103,15 +103,13 @@ class Controller {
   }
 
   public async sendOrderMedallon(user: User) {
-    if (isHamburger(user.currentOrderItem)) {
-      const options = [
-        'Si',
-        'No',
-      ];
-      const optionText = options.map((option, index) => `${index + 1}. ${option}`).join('\n');
-      const text = `Pediste: ${user.currentOrderItem.id}.${user.currentOrderItem.name} de tamaño ${user.currentOrderItem.sizes[1]}\nTe gustaria agregar medallones con queso a tu hamburguesa?\nSeleccioná una opcion:\n${optionText}\nSeleccioná 0 para volver atrás.`;
-      return await this.sendText(user.id, text);
-    }
+    const options = [
+      'Si',
+      'No',
+    ];
+    const optionText = options.map((option, index) => `${index + 1}. ${option}`).join('\n');
+    const text = `Pediste: ${user.currentOrderItem.getDetail()}\nTe gustaria agregar medallones con queso a tu hamburguesa?\nSeleccioná una opcion:\n${optionText}\nSeleccioná 0 para volver atrás.`;
+    return await this.sendText(user.id, text);
   }
 
   public async sendOrderMedallonQuantity(user: User) {
