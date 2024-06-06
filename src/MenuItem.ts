@@ -95,4 +95,19 @@ class Burger extends MenuItem {
   }
 }
 
+class Beverage extends MenuItem{
+
+  async updateUserStateAfterSelect(user: User, controller: Controller): Promise<Object | undefined>{
+    return Promise<undefined>
+  }
+
+  async setSize(size: number, user: User, controller: Controller): Promise<Object | undefined>{
+    return Promise<undefined>
+  }
+
+  async setMedallones(medallones: number, user: User, controller: Controller): Promise<Object | undefined>{
+    return Promise<undefined>
+  }
+}
+
 export {MenuItem, MenuItemDefault, Burger};
