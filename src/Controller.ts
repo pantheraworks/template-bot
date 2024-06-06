@@ -1,6 +1,6 @@
 import {Message, Whatsapp} from "venom-bot";
 import User from "./User";
-import MenuItem from "./MenuItem";
+import {MenuItem, Burger} from "./MenuItem";
 
 class Controller {
 
@@ -41,11 +41,11 @@ class Controller {
     const SDTP = ['Simple', 'Doble', 'Triple', 'Cuadruple'];
     const SD = ['Simple', 'Doble'];
     let options = new Map();
-    options.set('1', new MenuItem('1', 'hamburguesa', 9800, SDTP));
-    options.set('2', new MenuItem('2', 'hamburguesa con queso', 11000, SDTP));
-    options.set('3', new MenuItem('3', 'hamburguesa de pollo', 8500, SD));
-    options.set('4', new MenuItem('4', 'hamburguesa de bacon y cheddar', 13000, SDTP));
-    options.set('5', new MenuItem('5', 'hamburguesa jr', 5000, SD));
+    options.set('1', new Burger('1', 'hamburguesa', 9800, SDTP));
+    options.set('2', new Burger('2', 'hamburguesa con queso', 11000, SDTP));
+    options.set('3', new Burger('3', 'hamburguesa de pollo', 8500, SD));
+    options.set('4', new Burger('4', 'hamburguesa de bacon y cheddar', 13000, SDTP));
+    options.set('5', new Burger('5', 'hamburguesa jr', 5000, SD));
     return options;
   }
 
@@ -54,7 +54,7 @@ class Controller {
     (this.menuOptions).forEach((value: MenuItem, _key) => {
       optionText = optionText.concat(`${value.id}. ${value.name}\n`);
     });
-    optionText = optionText.concat('Seleccioná 0 para volver atrás.');
+    optionText = optionText.concat('Seleccioná 0 para volver atrás');
     return await this.sendText(user.id, optionText);
   }
 
@@ -86,9 +86,12 @@ class Controller {
   }
 
   public async sendOrderSizeOptions(user: User) {
-    const optionText = this.menuOptions.get(user.currentOrderItem.id)?.sizes.map((option, index) => `${index + 1}. ${option}`).join('\n');
-    const text = `Seleccioná el tamaño de tu ${this.menuOptions.get(user.currentOrderItem.id)?.name} :\n${optionText}\nSeleccioná 0 para volver atrás.`;
-    return await this.sendText(user.id, text);
+    const menuItem = this.menuOptions.get(user.currentOrderItem.id);
+    if (menuItem) {
+      const optionText = menuItem.getSizes().map((size, index) => `${index + 1}. ${size}`).join('\n');
+      const text = `Seleccioná el tamaño de tu ${menuItem.name} :\n${optionText}\nSeleccioná 0 para volver atrás`;
+      return await this.sendText(user.id, text);
+    }
   }
 
   public async sendOrderMedallon(user: User) {
@@ -97,7 +100,7 @@ class Controller {
       'No',
     ];
     const optionText = options.map((option, index) => `${index + 1}. ${option}`).join('\n');
-    const text = `Pediste: ${user.currentOrderItem.id}.${user.currentOrderItem.name} de tamaño ${user.currentOrderItem.sizes[1]}\nTe gustaria agregar medallones con queso a tu hamburguesa?\nSeleccioná una opcion:\n${optionText}\nSeleccioná 0 para volver atrás.`;
+    const text = `Pediste: ${user.currentOrderItem.getDetail()}\n¿Te gustaría agregar medallones con queso a tu hamburguesa?\nSeleccioná una opcion:\n${optionText}\nSeleccioná 0 para volver atrás`;
     return await this.sendText(user.id, text);
   }
 
